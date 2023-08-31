@@ -3,10 +3,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Usuario {
-    String username;
-    String email;
-    String senha;
-    ArrayList<String> amigos = new ArrayList<>(); //Lista de usernames dos amigos deste usuário
+    private String username;
+    private String email;
+    private String senha;
+    private ArrayList<String> amigos = new ArrayList<>(); //Lista de usernames dos amigos deste usuário
 
     Usuario(){} //Contrutor vazio, para criar um usuário sem nenhum atributo definido
     Usuario(String pUsername, String pEmail, String pSenha){ //Construtor com username, email e senha,
@@ -32,7 +32,7 @@ public class Usuario {
                 }
             }
             if(!emailEncontrado){ //Se um usuário com o email informado não for encontrado, acusa erro
-                System.out.println("[/!\\] Email inválido\n");
+                System.err.println("[/!\\] Email inválido\n");
             }
         }while(!emailEncontrado);
 
@@ -45,7 +45,7 @@ public class Usuario {
                 senhaCorreta = true;
                 break;
             } else{
-                System.out.println("[/!\\] A senha digitada não confere.\n");
+                System.err.println("[/!\\] A senha digitada não confere.\n");
             }
         } while(!senhaCorreta);
         // Só sai do loop após email e senhas validados
@@ -61,30 +61,49 @@ public class Usuario {
         System.out.println("\n[?] Digite o nome do usuário que você deseja adicionar");
         String termoDeBusca = scan.nextLine(); // Pedindo o nome do usuário que deseja adicionar
         Boolean usuarioEncontrado = false;
+        Boolean erro = false;
 
         for (Usuario resultado: usuarios) {
             if(termoDeBusca.equals(username)){ //Se for igual ao username do usuário logado, acusa erro e
-                System.out.println("[/!\\] Não é possível adicionar a sí próprio."); // quebra o loop.
-                usuarioEncontrado = true;
-                break;
+                System.err.println("[/!\\] Não é possível adicionar a si próprio."); // quebra o loop.
+                erro = true;
             }
             for(String amigoAtual: amigos){ // Vasculha os amigos atuais do usuário logado, para ver se o
                 if(termoDeBusca.equals(amigoAtual)){ // usuário buscado já não está adicionado.
-                    System.out.println(String.format("[/!\\] \"%s\" já está na sua lista de amigos.",amigoAtual));
-                    usuarioEncontrado = true; // Se estiver, quebra o loop.
+                    System.err.println(String.format("[/!\\] \"%s\" já está na sua lista de amigos.",amigoAtual));
+                    erro = true; // Se estiver, quebra o loop.
                 }
             }
-            if(resultado.username.equals(termoDeBusca)){ // Mas, se o FOR não caiu em nenhum loop anterior
+            if(resultado.username.equals(termoDeBusca)&&!(erro)){ // Mas, se o FOR não caiu em nenhum loop anterior
                 amigos.add(resultado.username); // e encontrar um usuário correspondente ao username informado,
                 System.out.println(String.format("[!] %s adicionado(a) à sua lista de contatos com sucesso!",
                         resultado.username)); // adiciona ele à lista de amigos do usuário logado.
                 usuarioEncontrado = true;
                 break;
             }
+            if(erro){
+                usuarioEncontrado = true;
+                break;
+            }
         }
         if(!usuarioEncontrado){
-            System.out.println(String.format("[/!\\] Não foi possível encontrar nenhum usuário de nome \"%s\"",termoDeBusca));
+            System.err.println(String.format("[/!\\] Não foi possível encontrar nenhum usuário de nome \"%s\"",termoDeBusca));
             // Se nenhum usuário foi encontrado com aquele username, acusa erro.
         }
+    }
+
+    @Override
+    public String toString(){
+        return String.format("""
+        --------------------------------
+        | 👤 - %s [Online 🟢] |
+        --------------------------------""",this.username);
+    }
+
+    public String getUsername() {
+        return username;
+    }
+    public ArrayList<String> getAmigos() {
+        return amigos;
     }
 }

@@ -23,15 +23,13 @@ public class Main {
         Boolean sair = false;
         do{
             System.out.println(String.format("\n[!] Olá, %s seja bem-vindo(a) ao Javasoft Network!🦋☕",
-                    usuarioAtual.username));
-            System.out.println("--------------------------------");
-            System.out.println(String.format("| 👤 - %s [Online 🟢] |",usuarioAtual.username));
-            System.out.println("--------------------------------");
+                    usuarioAtual.getUsername()));
+            System.out.println(usuarioAtual.toString());
 
-            Integer numAmigos = usuarioAtual.amigos.size(); // Calcula o número de amigos do usuário logado
+            Integer numAmigos = usuarioAtual.getAmigos().size(); // Calcula o número de amigos do usuário logado
             System.out.println(String.format("ℹ️ Sua lista de amigos [0|%d]",numAmigos));
 
-            for (String amigo: usuarioAtual.amigos) { // Se tiver mais de 0, os lista
+            for (String amigo: usuarioAtual.getAmigos()) { // Se tiver mais de 0, os lista
                 System.out.println("|\t👤 - "+amigo+" [Offline 🔴]");
             }
             if(numAmigos == 0){ // Se não tiver nenhum, dá uma mensagem informativa
@@ -42,7 +40,8 @@ public class Main {
             System.out.println("\n[?] Digite [A] para adicionar amigos ou [S] para sair.");
             do {
                 acao = scan.nextLine();
-            }while (!(acao.equals("A"))&&!(acao.equals("S"))); // Vai manter esse loop até selecionar uma das
+            }while (!(acao.equals("A"))
+                    &&!(acao.equals("S"))); // Vai manter esse loop até selecionar uma das
             // operações válidas
             switch (acao){
                 case "A":
